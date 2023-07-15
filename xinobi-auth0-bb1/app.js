@@ -5,6 +5,8 @@ const indexRouter = require('./router/index');
 const path = require('path');
 require('dotenv').config();
 
+// Add OIDC layer
+const { auth } = require('express-openid-connect');
 
 // Variables
 const WEBAPP_PORT = process.env.WEBAPP_PORT || 8000;
@@ -25,6 +27,17 @@ app.set('view engine', 'ejs');                  // Use the Ejs for view engine
 app.use(express.json());                        // Parse json
 app.use(express.urlencoded({extended: true}));  // handles urlencoded data in query strings, extended handles it for nested data
 app.use('/static', express.static(path.join(__dirname, 'public')));
+
+// Add OIDC config
+const config = {
+    authRequired: false,
+    auth0Logout: true,
+    baseURL: process.env.BASEURL,
+    clientID: process.env.CLIENTID,
+    issuerBaseURL: process.env.ISSUERBASEURL,
+    secret: process.env.SECRET
+  };
+app.use(auth(config));
 
 // Routes
 app.use('/', indexRouter);

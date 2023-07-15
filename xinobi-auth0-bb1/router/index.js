@@ -3,15 +3,19 @@ const dotenv = require('dotenv');
 const path = require('path');
 
 const env_path = path.resolve(__dirname, '../.env');
-console.log(env_path);
 dotenv.config({path: env_path});
 
 const APP_NAME = process.env.WEBAPP || "Sample Project";
 
 
 router.get('/', (req, res) => {
+
+    const isAuthenticated = req.oidc.isAuthenticated();
+
     res.render('index', {
-        title: APP_NAME
+        title: APP_NAME,
+        loggedIn: isAuthenticated,
+        user: req.oidc.user
     });
 });
 
