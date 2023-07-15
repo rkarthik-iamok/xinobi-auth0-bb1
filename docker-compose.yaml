@@ -1,0 +1,14 @@
+# docker compose --env-file=<path to env file> up -d
+# docker compose --env-file=<path to env file> down --rmi=all -v
+
+version: "2.15"
+services:
+  xinobi-auth0-bb1:
+   build: ./${WEBAPP}
+   image: ${DOCKERIMAGE}
+   container_name: ${DOCKERCONTAINER}
+   ports:
+    - '${WEBAPP_PORT}:${WEBAPP_PORT}'
+   volumes:
+    - ./${WEBAPP}:/app
+    - /app/node_modules
